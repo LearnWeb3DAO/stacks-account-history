@@ -1,3 +1,17 @@
+const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK ?? "mainnet").toLowerCase();
+
+const DEFAULT_HIRO_API_BY_NETWORK: Record<string, string> = {
+  mainnet: "https://api.hiro.so",
+  testnet: "https://api.testnet.hiro.so",
+  devnet: "http://localhost:3999",
+  mocknet: "http://localhost:3999",
+};
+
+const HIRO_API_BASE_URL =
+  process.env.NEXT_PUBLIC_HIRO_API_BASE_URL ??
+  DEFAULT_HIRO_API_BY_NETWORK[STACKS_NETWORK] ??
+  DEFAULT_HIRO_API_BY_NETWORK.mainnet;
+
 interface FetchAddressTransactionsArgs {
   address: string;
   offset?: number;
@@ -85,7 +99,7 @@ export async function fetchAddressTransactions({
   address,
   offset = 0,
 }: FetchAddressTransactionsArgs): Promise<FetchAddressTransactionsResponse> {
-  const url = `https://api.hiro.so/extended/v2/addresses/${address}/transactions?limit=20&offset=${offset}`;
+  const url = `${HIRO_API_BASE_URL}/extended/v2/addresses/${address}/transactions?limit=20&offset=${offset}`;
 
   const response = await fetch(url);
 

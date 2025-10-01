@@ -1,23 +1,19 @@
-import {
-  AppConfig,
-  showConnect,
-  type UserData,
-  UserSession,
-} from "@stacks/connect";
-import { useEffect, useState } from "react";
+"use client";
+
+import { AppConfig, UserSession } from "@stacks/connect";
+import type { UserData } from "@stacks/connect";
+import { useEffect, useMemo, useState } from "react";
 
 export function useStacks() {
   // Initially when the user is not logged in, userData is null
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  // create application config that allows
-  // storing authentication state in browser's local storage
-  const appConfig = new AppConfig(["store_write"]);
+  const appConfig = useMemo(() => new AppConfig(["store_write"]), []);
+  const userSession = useMemo(() => new UserSession({ appConfig }), [appConfig]);
 
-  // creating a new user session based on the application config
-  const userSession = new UserSession({ appConfig });
+  async function connectWallet() {
+    const { showConnect } = await import("@stacks/connect");
 
-  function connectWallet() {
     showConnect({
       appDetails: {
         name: "Stacks Account History",
@@ -53,5 +49,5 @@ export function useStacks() {
   }, []);
 
   // return the user data, connect wallet function, and disconnect wallet function
-  return { userData, connectWallet, disconnectWallet };
+  return { userData, connectWallet, disconnectWallet, userSession };
 }
