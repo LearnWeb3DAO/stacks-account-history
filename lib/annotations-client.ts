@@ -17,9 +17,13 @@ import { networkFromName, type StacksNetwork, type StacksNetworkName } from "@st
 
 type OpenContractCallOptions = Parameters<(typeof import("@stacks/connect"))["openContractCall"]>[0];
 
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_ANNOTATIONS_CONTRACT_ADDRESS ?? "";
+const DEFAULT_CONTRACT_ADDRESS =
+  "ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q";
+
+const CONTRACT_ADDRESS =
+  process.env.NEXT_PUBLIC_ANNOTATIONS_CONTRACT_ADDRESS ?? DEFAULT_CONTRACT_ADDRESS;
 const CONTRACT_NAME = process.env.NEXT_PUBLIC_ANNOTATIONS_CONTRACT_NAME ?? "transaction-annotations";
-const NETWORK_ID = (process.env.NEXT_PUBLIC_STACKS_NETWORK ?? "mainnet").toLowerCase();
+const NETWORK_ID = (process.env.NEXT_PUBLIC_STACKS_NETWORK ?? "testnet").toLowerCase();
 
 const NETWORK_NAME: StacksNetworkName =
   NETWORK_ID === "testnet"

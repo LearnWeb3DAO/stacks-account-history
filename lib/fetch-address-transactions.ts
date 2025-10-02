@@ -1,4 +1,4 @@
-const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK ?? "mainnet").toLowerCase();
+const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK ?? "testnet").toLowerCase();
 
 const DEFAULT_HIRO_API_BY_NETWORK: Record<string, string> = {
   mainnet: "https://api.hiro.so",
