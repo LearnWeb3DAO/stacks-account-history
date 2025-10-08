@@ -1,0 +1,8 @@
+[project]
+name = "tx-categories"
+requirements = []
+
+[contracts.tx-categories]
+path = "contracts/tx-categories.clar"
+clarity_version = 2
+epoch = "2.4"

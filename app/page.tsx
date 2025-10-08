@@ -4,7 +4,7 @@ import { useStacks } from "@/hooks/use-stacks";
 import { redirect } from "next/navigation";
 
 export default function Home() {
-  const { userData } = useStacks();
+  const { userData, network } = useStacks();
 
   if (!userData) {
     return (
@@ -14,5 +14,12 @@ export default function Home() {
     );
   }
 
-  redirect(`/${userData.profile.stxAddress.mainnet}`);
+  // Redirect to the appropriate address based on the current network
+  const address =
+    network === "mainnet"
+      ? userData.profile.stxAddress.mainnet
+      : userData.profile.stxAddress.testnet;
+
+  const query = network === "testnet" ? "?network=testnet" : "";
+  redirect(`/${address}${query}`);
 }

@@ -1,48 +1,93 @@
+"use client";
+
 import {
   AppConfig,
   showConnect,
   type UserData,
   UserSession,
 } from "@stacks/connect";
-import { useEffect, useState } from "react";
+import { STACKS_MAINNET, STACKS_TESTNET } from "@stacks/network";
+import { useNetwork } from "@/contexts/network-context";
+import { useEffect, useMemo, useState } from "react";
+
+// Key where Stacks stores session info
+const SESSION_KEY = "blockstack-session";
+
+// Function to validate session structure
+function isValidSessionData(json: any): boolean {
+  return json && typeof json === "object" && typeof json.version === "string";
+}
 
 export function useStacks() {
-  // Initially when the user is not logged in, userData is null
+  const { network, getApiUrl } = useNetwork();
   const [userData, setUserData] = useState<UserData | null>(null);
 
-  // create application config that allows
-  // storing authentication state in browser's local storage
-  const appConfig = new AppConfig(["store_write"]);
+  // Create Stacks network instance based on current network
+  const stacksNetwork = useMemo(() => {
+    const apiUrl = getApiUrl();
+    if (network === "mainnet") {
+      return { ...STACKS_MAINNET, url: apiUrl };
+    }
+    return { ...STACKS_TESTNET, url: apiUrl };
+  }, [network, getApiUrl]);
 
-  // creating a new user session based on the application config
-  const userSession = new UserSession({ appConfig });
+  // Create AppConfig with the current Stacks network
+  const appConfig = useMemo(
+    () => new AppConfig(["store_write"], undefined, undefined, undefined, stacksNetwork.url),
+    [stacksNetwork]
+  );
+
+  // Initialize UserSession
+  const userSession = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    const raw = localStorage.getItem(SESSION_KEY);
+
+    if (raw) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (!isValidSessionData(parsed)) {
+          console.warn("Invalid session schema. Clearing corrupted session.");
+          localStorage.removeItem(SESSION_KEY);
+        }
+      } catch (err) {
+        console.warn("Failed to parse session JSON. Clearing corrupted session.");
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    return new UserSession({ appConfig });
+  }, [appConfig]);
 
   function connectWallet() {
+    if (!userSession) return;
+
     showConnect({
       appDetails: {
         name: "Stacks Account History",
         icon: "https://cryptologos.cc/logos/stacks-stx-logo.png",
       },
       onFinish: () => {
-        // reload the webpage when wallet connection succeeds
-        // to ensure that the user session gets populated from local storage
-        window.location.reload();
+        setUserData(userSession.loadUserData()); // Update userData without reloading
+      },
+      onCancel: () => {
+        console.log("Wallet connection cancelled");
       },
       userSession,
     });
   }
 
   function disconnectWallet() {
-    // sign out the user and close their session
-    // also clear out the user data
+    if (!userSession) return;
+
     userSession.signUserOut();
+    localStorage.removeItem(SESSION_KEY); // Clear session data on disconnect
     setUserData(null);
   }
 
-  // When the page first loads, if the user is already signed in,
-  // set the userData
-  // If the user has a pending sign-in instead, resume the sign-in flow
   useEffect(() => {
+    if (!userSession) return;
+
     if (userSession.isUserSignedIn()) {
       setUserData(userSession.loadUserData());
     } else if (userSession.isSignInPending()) {
@@ -50,8 +95,7 @@ export function useStacks() {
         setUserData(userData);
       });
     }
-  }, []);
+  }, [userSession]);
 
-  // return the user data, connect wallet function, and disconnect wallet function
-  return { userData, connectWallet, disconnectWallet };
+  return { userData, connectWallet, disconnectWallet, network };
 }
