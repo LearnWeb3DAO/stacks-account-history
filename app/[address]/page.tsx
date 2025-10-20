@@ -1,18 +1,57 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { TransactionsList } from "@/components/txns-list";
+import { StakingTab } from "@/components/staking/staking-tab";
 import { fetchAddressTransactions } from "@/lib/fetch-address-transactions";
 import { ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 
-export default async function Activity({
+type TabType = "transactions" | "staking";
+
+export default function Activity({
   params,
 }: {
   params: Promise<{ address: string }>;
 }) {
-  // params contains parameters we can parse from the URL Route
-  const { address } = await params;
+  const [resolvedParams, setResolvedParams] = useState<{ address: string } | null>(null);
 
-  // Once we know the address, we fetch the initial 20 transactions
-  const initialTransactions = await fetchAddressTransactions({ address });
+  useEffect(() => {
+    params.then(setResolvedParams);
+  }, [params]);
+
+  const address = resolvedParams?.address;
+  const [activeTab, setActiveTab] = useState<TabType>("transactions");
+  const [initialTransactions, setInitialTransactions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch initial transactions
+  useEffect(() => {
+    if (!address) return;
+
+    const loadTransactions = async () => {
+      try {
+        const transactions = await fetchAddressTransactions({ address });
+        setInitialTransactions(transactions);
+      } catch (error) {
+        console.error("Failed to load transactions:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTransactions();
+  }, [address]);
+
+  if (!address) {
+    return (
+      <main className="flex h-[100vh-4rem] flex-col p-8 gap-8">
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex h-[100vh-4rem] flex-col p-8 gap-8">
@@ -28,7 +67,46 @@ export default async function Activity({
         </Link>
       </div>
 
-      <TransactionsList address={address} transactions={initialTransactions} />
+      {/* Tab Navigation */}
+      <div className="border-b border-gray-700">
+        <nav className="flex space-x-8">
+          <button
+            onClick={() => setActiveTab("transactions")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === "transactions"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+              }`}
+          >
+            Transactions
+          </button>
+          <button
+            onClick={() => setActiveTab("staking")}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${activeTab === "staking"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-300"
+              }`}
+          >
+            Staking
+          </button>
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      <div className="flex-1">
+        {activeTab === "transactions" && (
+          <>
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+              </div>
+            ) : (
+              <TransactionsList address={address} transactions={initialTransactions} />
+            )}
+          </>
+        )}
+
+        {activeTab === "staking" && <StakingTab />}
+      </div>
     </main>
   );
 }

@@ -1,0 +1,19 @@
+[project]
+name = "stx-staking"
+description = "STX Staking functionality for Account History app"
+authors = []
+telemetry = false
+cache_dir = "./.clarinet"
+
+[contracts.staking]
+path = "contracts/staking.clar"
+clarity_version = 2
+epoch = 2.4
+
+[repl]
+costs_version = 2
+parser_version = 2
+
+[[repl.sessions]]
+name = "default"
+start = "::get_contracts_info"

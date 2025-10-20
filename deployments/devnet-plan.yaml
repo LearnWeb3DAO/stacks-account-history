@@ -1,0 +1,16 @@
+---
+id: 0
+name: Staking Contract Deployment
+network: devnet
+stacks-node: "http://localhost:20443"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: staking
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 5340
+            path: contracts/staking.clar
+            anchor-block-only: true
+            clarity-version: 2

@@ -1,0 +1,17 @@
+---
+id: 0
+name: Staking Contract Deployment
+network: testnet
+stacks-node: "https://api.testnet.hiro.so"
+bitcoin-node: "https://blockstream.info/testnet/api"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: staking
+            expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            cost: 5340
+            path: contracts/staking.clar
+            anchor-block-only: true
+            clarity-version: 2
