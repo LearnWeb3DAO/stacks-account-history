@@ -6,10 +6,20 @@ Stacks Account History lets you view paginated on-chain activity for any Stacks 
 ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q.transaction-annotations
 ```
 
+## 🔗 WalletConnect Integration
+
+This application now supports **WalletConnect v2** for seamless wallet connections, enabling both browser extensions and mobile wallets!
+
+**Supported Connection Methods:**
+- 🖥️ **Browser Extensions:** Direct connection via Leather or Xverse
+- 📱 **Mobile Wallets:** WalletConnect QR code scanning for any Stacks-compatible mobile wallet
+- 🔐 **Secure Protocol:** End-to-end encrypted connections via WalletConnect
+
 ## Prerequisites
 
 - Node.js 18+
 - npm 9+
+- **Stacks Wallet:** Browser extension (Leather/Xverse) or mobile wallet with WalletConnect support
 - [Clarinet](https://docs.hiro.so/clarinet/introduction) (optional, required for contract work)
 
 ## Environment configuration
@@ -17,10 +27,18 @@ ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q.transaction-annotations
 Create a `.env.local` file (or export the variables in your shell):
 
 ```bash
-NEXT_PUBLIC_STACKS_NETWORK=testnet
-NEXT_PUBLIC_HIRO_API_BASE_URL=https://api.testnet.hiro.so
+# Stacks Network Configuration
+NEXT_PUBLIC_STACKS_NETWORK=mainnet
+NEXT_PUBLIC_HIRO_API_BASE_URL=https://api.mainnet.hiro.so
+
+# Contract Configuration
 NEXT_PUBLIC_ANNOTATIONS_CONTRACT_ADDRESS=ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q
+
+# WalletConnect Configuration
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=1eebe528ca0ce94a99ceaa2e915058d7
 ```
+
+**Note:** The WalletConnect Project ID is pre-configured. For production deployments, obtain your own Project ID at [WalletConnect Cloud](https://cloud.walletconnect.com/).
 
 The values above are pre-configured defaults in the codebase, but setting them explicitly makes it easy to point the frontend at a different deployment later.
 
@@ -36,7 +54,13 @@ npm install
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) and connect a Stacks wallet to try the annotation flow. Notes you save are scoped to your wallet and stored by the `transaction-annotations` contract on testnet.
+Visit [http://localhost:3000](http://localhost:3000) and connect a Stacks wallet to try the annotation flow:
+
+**Connecting Your Wallet:**
+- **Desktop:** Click "Connect Wallet" → Choose your browser extension (Leather/Xverse)
+- **Mobile:** Click "Connect Wallet" → Scan the WalletConnect QR code with your mobile wallet
+
+Notes you save are scoped to your wallet and stored by the `transaction-annotations` contract on testnet.
 
 ## Lint, build, and test
 

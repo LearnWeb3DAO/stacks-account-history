@@ -3,6 +3,7 @@
 import { AppConfig, UserSession } from "@stacks/connect";
 import type { UserData } from "@stacks/connect";
 import { useEffect, useMemo, useState } from "react";
+import { WALLET_METADATA } from "@/lib/walletconnect-config";
 
 export function useStacks() {
   // Initially when the user is not logged in, userData is null
@@ -16,12 +17,10 @@ export function useStacks() {
 
     showConnect({
       appDetails: {
-        name: "Stacks Account History",
-        icon: "https://cryptologos.cc/logos/stacks-stx-logo.png",
+        name: WALLET_METADATA.name,
+        icon: WALLET_METADATA.icons[0],
       },
       onFinish: () => {
-        // reload the webpage when wallet connection succeeds
-        // to ensure that the user session gets populated from local storage
         window.location.reload();
       },
       userSession,
