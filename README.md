@@ -6,6 +6,12 @@ Stacks Account History lets you view paginated on-chain activity for any Stacks 
 ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q.transaction-annotations
 ```
 
+## 🚀 Live Deployment
+
+**Vercel App:** [https://stacks-account-history-cy8qb7ptq-big14ways-projects.vercel.app](https://stacks-account-history-cy8qb7ptq-big14ways-projects.vercel.app)
+
+> 🔗 **WalletConnect v2 Enabled** - Connect with browser extensions (Leather/Xverse) or mobile wallets via QR code
+
 ## 🔗 WalletConnect Integration
 
 This application now supports **WalletConnect v2** for seamless wallet connections, enabling both browser extensions and mobile wallets!
