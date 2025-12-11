@@ -9,10 +9,10 @@ plan:
     - id: 0
       transactions:
         - contract-publish:
-            contract-name: transaction-annotations
+            contract-name: transaction-annotations-v4
             expected-sender: ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q
-            cost: 8940
+            cost: 15120
             path: contracts/transaction-annotations.clar
             anchor-block-only: true
-            clarity-version: 3
-      epoch: "3.2"
+            clarity-version: 4
+      epoch: "3.3"

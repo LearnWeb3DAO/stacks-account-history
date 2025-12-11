@@ -58,13 +58,14 @@ genesis:
     - pox-4
     - signers
     - signers-voting
+    - costs-4
 plan:
   batches:
     - id: 0
       transactions:
         - emulated-contract-publish:
-            contract-name: transaction-annotations
+            contract-name: transaction-annotations-v4
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/transaction-annotations.clar
-            clarity-version: 3
-      epoch: "3.2"
+            clarity-version: 4
+      epoch: "3.3"

@@ -5,10 +5,10 @@ authors = []
 telemetry = true
 cache_dir = './.cache'
 requirements = []
-[contracts.transaction-annotations]
+[contracts.transaction-annotations-v4]
 path = 'contracts/transaction-annotations.clar'
-clarity_version = 3
-epoch = 'latest'
+clarity_version = 4
+epoch = 3.3
 [repl.analysis]
 passes = ['check_checker']
 

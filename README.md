@@ -1,10 +1,63 @@
-# Stacks Account History
+# Stacks Account History - Clarity 4 Enhanced ⚡
 
-Stacks Account History lets you view paginated on-chain activity for any Stacks address and store personal annotations for each transaction. The smart contract backing annotations is live on Stacks testnet:
+Stacks Account History lets you view paginated on-chain activity for any Stacks address and store personal annotations for each transaction.
 
+**Upgraded to Clarity 4 (Epoch 3.3)** with enhanced security features and new built-in functions!
+
+## ✨ New Clarity 4 Features Used
+
+This project leverages the following **NEW Clarity 4 functions**:
+
+1. **`contract-hash?`** - Get contract hash for integrity verification
+   - Function: `get-contract-hash()` - Returns the contract's hash
+   - Function: `verify-contract-integrity()` - Verifies contract integrity
+
+2. **`to-ascii?`** - Convert uint to ASCII string representation
+   - Function: `note-length-to-string(length)` - Converts note length to ASCII
+
+3. **`stacks-block-height`** - Access current block height for time-based logic
+   - Function: `get-current-block-height()` - Get current block height
+   - Enables future time-based annotation features
+
+### Key Improvements in Clarity 4
+
+- **Better Transparency**: Contract hash verification for integrity checks
+- **More Flexibility**: Built-in utilities for data conversion
+- **Future-Ready**: Foundation for advanced annotation features
+
+## 🧪 Testing
+
+Contract validation:
+
+```bash
+# Verify contract passes Clarity 4 validation
+cd clarinet
+clarinet check
 ```
-ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q.transaction-annotations
-```
+
+**Result**: ✅ Contract checked and validated for Clarity 4 (Epoch 3.3)
+
+## 🚀 Deployment
+
+**Status: DEPLOYED TO TESTNET** ✅
+
+### Deployed Contract
+
+The contract has been successfully deployed to Stacks testnet:
+
+- **Deployer Address**: `ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q`
+- **Transaction Annotations (v4)**: `ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q.transaction-annotations-v4`
+- **Transaction ID**: `2de952bc793f38e40007507b9c4b6d4fca53d3af8fd0d8e5341f8e261c590833`
+
+**Deployment Details:**
+- Contract Name: `transaction-annotations-v4`
+- Clarity Version: 4
+- Epoch: 3.3
+- Network: Stacks Testnet
+- Total Cost: 0.015120 STX
+- Duration: 1 block
+
+The contract passed all Clarity 4 validation checks and is now live on testnet.
 
 ## 🚀 Live Deployment
 

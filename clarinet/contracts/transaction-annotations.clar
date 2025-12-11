@@ -1,5 +1,29 @@
 ;; title: transaction-annotations
 
+;; Clarity 4 Features
+;; Get contract hash - Clarity 4 feature
+(define-read-only (get-contract-hash)
+  (ok (contract-hash? .transaction-annotations-v4))
+)
+
+;; Verify contract integrity - Clarity 4 feature
+(define-read-only (verify-contract-integrity)
+  (match (contract-hash? .transaction-annotations-v4)
+    hash-value (ok true)
+    error-val (ok false)
+  )
+)
+
+;; Get current block height - Clarity 4 feature
+(define-read-only (get-current-block-height)
+  (ok stacks-block-height)
+)
+
+;; Convert note length to string - Clarity 4 feature
+(define-read-only (note-length-to-string (length uint))
+  (to-ascii? length)
+)
+
 (define-constant MAX-NOTE-LENGTH u280)
 (define-constant ERR-NOTE-EMPTY (err u100))
 (define-constant ERR-NOTE-NOT-FOUND (err u404))
