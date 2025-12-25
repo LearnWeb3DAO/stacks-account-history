@@ -4,6 +4,7 @@ import {
   fetchAddressTransactions,
   type FetchAddressTransactionsResponse,
 } from "@/lib/fetch-address-transactions";
+import { useStacks } from "@/hooks/use-stacks";
 import { TransactionDetail } from "./txn-details";
 import { useState } from "react";
 
@@ -17,6 +18,8 @@ export function TransactionsList({
   transactions,
 }: TransactionsListProps) {
   const [allTxns, setAllTxns] = useState(transactions);
+  const { userData, userSession } = useStacks();
+  const viewerAddress = userData?.profile?.stxAddress?.mainnet;
 
   // Load another 20 txns
   async function loadMoreTxns() {
@@ -41,7 +44,11 @@ export function TransactionsList({
       <div className="flex flex-col border rounded-md divide-y border-gray-800 divide-gray-800">
         {allTxns.results.map((tx) => (
           <div key={tx.tx.tx_id}>
-            <TransactionDetail result={tx} />
+            <TransactionDetail
+              result={tx}
+              viewerAddress={viewerAddress}
+              userSession={userSession}
+            />
           </div>
         ))}
       </div>

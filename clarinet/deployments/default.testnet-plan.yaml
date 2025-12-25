@@ -1,0 +1,18 @@
+---
+id: 0
+name: Testnet deployment
+network: testnet
+stacks-node: "https://api.testnet.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoind.testnet.stacks.co:18332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: transaction-annotations-v4
+            expected-sender: ST1NA1KECSN6QSZQM652X5AEDKBR6RMEJ0JGCX99Q
+            cost: 15120
+            path: contracts/transaction-annotations.clar
+            anchor-block-only: true
+            clarity-version: 4
+      epoch: "3.3"
